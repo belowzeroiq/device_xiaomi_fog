@@ -44,13 +44,9 @@ on init
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
     start vendor.qseecomd
 
-    # ZRAM setup
-    write /sys/block/zram0/comp_algorithm lz4
-    write /sys/block/zram0/max_comp_streams 8
-    write /proc/sys/vm/page-cluster 0
-
 on fs
     start hwservicemanager
+    chown media audio /mnt/vendor/persist/audio
     mount_all /vendor/etc/fstab.qcom --early
     chown root system /mnt/vendor/persist
     chmod 0771 /mnt/vendor/persist
@@ -141,15 +137,23 @@ on boot
     chmod 0666 /dev/stune/background/cgroup.procs
     chmod 0666 /dev/stune/top-app/cgroup.procs
 
+    # Governor settings
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/hispeed_freq 1516000
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/hispeed_freq 1344000
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1344000"
+    write /sys/module/cpu_boost/parameters/input_boost_ms 120
+
     # DT2W
-    chown system system /sys/touchpanel/double_tap
-    chmod 0660 /sys/touchpanel/double_tap
+    chown system system /proc/tp_gesture
+    chmod 0664 /proc/tp_gesture
 
     # Battery health
     chown system system /sys/class/power_supply/battery/input_suspend
     chmod 0666 /sys/class/power_supply/battery/input_suspend
 
-   # USB controller configuration
+    # USB controller configuration
     setprop vendor.usb.rndis.func.name "gsi"
     setprop vendor.usb.rmnet.func.name "gsi"
     setprop vendor.usb.rmnet.inst.name "rmnet"
@@ -159,7 +163,7 @@ on boot
     start mi_thermald
     start vendor.sensors
 
-   # Load WLAN driver
+    # Load WLAN driver
     insmod /vendor/lib/modules/qca_cld3_wlan.ko
 
     # ADD VIB chmod
@@ -169,6 +173,9 @@ on boot
 
     # Load exfat driver
     insmod /vendor/lib/modules/exfat.ko
+
+    # default country code
+    setprop ro.boot.wificountrycode 00
 
 on boot && property:persist.vendor.usb.controller.default=*
     setprop vendor.usb.controller ${persist.vendor.usb.controller.default}
@@ -209,15 +216,6 @@ service vendor.per_proxy /vendor/bin/pm-proxy
     group system
     disabled
 
-service vendor.mdm_helper /vendor/bin/mdm_helper
-    class core
-    group system wakelock
-    disabled
-
-service vendor.mdm_launcher /vendor/bin/sh /vendor/bin/init.mdm.sh
-    class core
-    oneshot
-
 on property:init.svc.vendor.per_mgr=running
     start vendor.per_proxy
 
@@ -257,8 +255,17 @@ on post-fs-data
     chmod 0660 /dev/pn553
     chown nfc nfc /dev/pn553
 
-   # Enable ZRAM on boot_complete
-on property:sys.boot_completed=1  
-    rm /data/unencrypted/zram_swap
-    swapon_all /vendor/etc/fstab.qcom
+    # Enable suspend to RAM
+    write /sys/power/mem_sleep "deep"
+
+on property:sys.boot_completed=1
+    # Read only one page at a time
+    write /proc/sys/vm/page-cluster 0
+    # Swap more aggressively
     write /proc/sys/vm/swappiness 100
+    # Set zRAM compression algorithm to LZ4
+    write /sys/block/zram0/comp_algorithm lz4
+    # Enable zRAM data deduplication feature
+    write /sys/block/zram0/use_dedup 1
+    # Mount swap partitions specified in fstab
+    swapon_all /vendor/etc/fstab.zram

@@ -11,7 +11,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 
 # Enable virtual A/B OTA
-$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch_with_vendor_ramdisk.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/vabc_features.mk)
+PRODUCT_VIRTUAL_AB_COMPRESSION_METHOD := lz4
 
 # A/B
 AB_OTA_POSTINSTALL_CONFIG += \
@@ -30,11 +31,6 @@ PRODUCT_PACKAGES += \
 
 # API Level
 PRODUCT_SHIPPING_API_LEVEL := 30
-
-# ART Debugging (Disable)
-USE_DEX2OAT_DEBUG := false
-PRODUCT_MINIMIZE_JAVA_DEBUG_INFO := true
-PRODUCT_ART_TARGET_INCLUDE_DEBUG_BUILD := false
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -87,6 +83,7 @@ PRODUCT_COPY_FILES += \
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1650
 TARGET_SCREEN_WIDTH := 720
+TARGET_BOOTANIMATION_HALF_RES := true
 
 # Bootcontrol
 PRODUCT_PACKAGES += \
@@ -99,13 +96,11 @@ PRODUCT_PACKAGES_DEBUG += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    android.frameworks.sensorservice@1.0 \
-    android.frameworks.sensorservice@1.0.vendor \
     android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service_64 \
     libcamera2ndk_vendor \
     libgui_vendor \
-    libstdc++.vendor \
+    libstdc++_vendor \
     vendor.qti.hardware.camera.device@1.0.vendor \
     vendor.qti.hardware.camera.postproc@1.0.vendor
 
@@ -159,9 +154,6 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.mapper@2.0.vendor \
     vendor.qti.hardware.display.mapper@3.0.vendor \
     vendor.qti.hardware.display.mapper@4.0.vendor
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/init/init.qti.display_boot.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.display_boot.sh
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.opengles.aep.xml
@@ -231,6 +223,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     ipacm \
     IPACM_cfg.xml
+
+# Inherit several Android Go Configurations(Beneficial for everyone, even on non-Go devices)
+PRODUCT_USE_PROFILE_FOR_BOOT_IMAGE := true
+PRODUCT_DEX_PREOPT_BOOT_IMAGE_PROFILE_LOCATION := frameworks/base/config/boot-image-profile.txt
 
 # IRQ balance
 PRODUCT_COPY_FILES += \
@@ -347,34 +343,16 @@ PRODUCT_PACKAGES += \
     TelephonyOverlayFog \
     WifiOverlayFog
 
-PRODUCT_ENFORCE_RRO_TARGETS := *
-
 # Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
-
-# Perf
-PRODUCT_PACKAGES += \
-    android.hardware.thermal@2.0 \
-    android.hardware.thermal@2.0.vendor \
-    libpsi.vendor \
-    libtflite
-
-PRODUCT_BOOT_JARS += \
-    QPerformance \
-    UxPerformance
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/perf/perfboostsconfig.xml:$(TARGET_COPY_OUT_VENDOR)/etc/perf/perfboostsconfig.xml \
-    $(LOCAL_PATH)/configs/perf/perfconfigstore.xml:$(TARGET_COPY_OUT_VENDOR)/etc/perf/perfconfigstore.xml \
-    $(LOCAL_PATH)/configs/perf/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/perf/powerhint.xml
-
-# Preopted ODEX files (system_other)
-PRODUCT_PACKAGES += \
-    cppreopts.sh
 
 # Public libraries
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
+
+# Perf
+PRODUCT_PACKAGES += \
+    libqti-perfd-client
 
 # Power
 PRODUCT_PACKAGES += \
@@ -384,6 +362,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_SOONG_NAMESPACES += \
     hardware/google/interfaces \
     hardware/google/pixel
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
+
+# Protobuf
+PRODUCT_PACKAGES += \
+    libprotobuf-cpp-full \
+    libprotobuf-cpp-full-3.9.1-vendorcompat
 
 # QMI
 PRODUCT_PACKAGES += \
@@ -399,7 +385,6 @@ PRODUCT_PACKAGES += \
     android.hardware.radio.config@1.3.vendor \
     android.hardware.radio.deprecated@1.0.vendor \
     android.hardware.secure_element@1.2.vendor \
-    libprotobuf-cpp-full \
     librmnetctl \
     libxml2
 
@@ -413,6 +398,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     fstab.qcom \
     fstab.qcom_ramdisk \
+    fstab.zram \
     init.qcom.power.rc \
     init.qcom.rc \
     init.qcom.usb.rc \
@@ -423,11 +409,13 @@ PRODUCT_PACKAGES += \
 # Sensors
 PRODUCT_PACKAGES += \
     android.hardware.sensors@2.1-service.multihal \
+    android.frameworks.sensorservice@1.0.vendor \
+    android.frameworks.sensorservice@1.0 \
     libsensorndkbridge
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
-
+    
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.barometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.barometer.xml \
@@ -443,16 +431,6 @@ PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
     hardware/qcom-caf/bootctrl \
     hardware/xiaomi
-
-# Speed profile services and wifi-service to reduce RAM and storage
-PRODUCT_SYSTEM_SERVER_COMPILER_FILTER := speed-profile
-PRODUCT_ALWAYS_PREOPT_EXTRACTED_APK := true
-WITH_DEXPREOPT_DEBUG_INFO := false
-DONT_DEXPREOPT_PREBUILTS := true
-
-PRODUCT_DEXPREOPT_SPEED_APPS += \
-    Settings \
-    SystemUI
 
 # Update engine
 PRODUCT_PACKAGES += \
@@ -492,7 +470,7 @@ PRODUCT_COPY_FILES += \
 
 # USB
 PRODUCT_PACKAGES += \
-    android.hardware.usb@1.2.vendor:64
+    android.hardware.usb@1.3-service-qti
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.usb.accessory.xml \
@@ -517,7 +495,7 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.vibrator.service
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/excluded-input-devices.xml:$(TARGET_COPY_OUT_VENDOR)/etc/excluded-input-devices.xml
+    vendor/qcom/opensource/vibrator/excluded-input-devices.xml:$(TARGET_COPY_OUT_VENDOR)/etc/excluded-input-devices.xml
 
 # VNDK
 PRODUCT_EXTRA_VNDK_VERSIONS := 30
@@ -534,7 +512,7 @@ PRODUCT_COPY_FILES += \
 
 # WiFi
 PRODUCT_PACKAGES += \
-    android.hardware.wifi@1.0-service \
+    android.hardware.wifi-service \
     android.hardware.wifi.hostapd \
     android.hardware.wifi.supplicant \
     hostapd \
@@ -544,7 +522,6 @@ PRODUCT_PACKAGES += \
     TetheringOverlayFog \
     vendor.qti.hardware.wifi.hostapd@1.2.vendor \
     vendor.qti.hardware.wifi.supplicant@2.1.vendor \
-    WifiResCommon \
     wpa_supplicant \
     wpa_supplicant.conf
 
@@ -557,14 +534,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.hardware.wifi.passpoint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.passpoint.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
-
-# WiFi Display
-PRODUCT_PACKAGES += \
-    libnl \
-    libwfdaac_vendor
-
-PRODUCT_BOOT_JARS += \
-    WfdCommon
 
 # Inherit from vendor blobs
 $(call inherit-product, vendor/xiaomi/fog/fog-vendor.mk)

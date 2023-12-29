@@ -13,7 +13,7 @@ rm -rf hardware/google/pixel/kernel_headers/Android.bp
 rm -rf hardware/xiaomi
 
 # clone lineage os hardware_xiaomi
-git clone https://github.com/LineageOS/android_hardware_xiaomi -b lineage-20 hardware/xiaomi
+git clone https://github.com/PixelExperience/hardware_xiaomi -b thirteen hardware/xiaomi
 
 # Kernel Sources
 git clone https://github.com/KDEFFALT/fog-kernel -b artifact-r2 kernel/xiaomi/fog

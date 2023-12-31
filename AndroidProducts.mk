@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/proton_fog.mk
+    $(LOCAL_DIR)/apollo_fog.mk
 
 COMMON_LUNCH_CHOICES := \
-    proton_fog-user \
-    proton_fog-userdebug \
-    proton_fog-eng
+    apollo_fog-user \
+    apollo_fog-userdebug \
+    apollo_fog-eng

@@ -8,8 +8,8 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-# Inherit some common Proton stuff.
-$(call inherit-product, vendor/proton/config/common.mk)
+# Inherit some common Apollo stuff.
+$(call inherit-product, vendor/apollo/config/common_full_phone.mk)
 
 # Inherit from fog device
 $(call inherit-product, device/xiaomi/fog/device.mk)

@@ -7,6 +7,7 @@
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Inherit some common Clown stuff.
 $(call inherit-product, vendor/clown/config/common.mk)
@@ -16,6 +17,19 @@ $(call inherit-product, device/xiaomi/fog/device.mk)
 
 # Device configs
 TARGET_BOOT_ANIMATION_RES := 720
+
+#Face Unlock
+TARGET_FACE_UNLOCK_SUPPORTED := true
+
+# Clown configs
+CLOWN_MAINTAINER := Katze_as_a_Jackie
+
+#GMS Settings
+WITH_GAPPS := true
+TARGET_INCLUDE_STOCK_ARCORE := true
+TARGET_SUPPORTS_QUICK_TAP := true
+TARGET_SUPPORTS_GOOGLE_RECORDER := true
+TARGET_INCLUDE_LIVE_WALLPAPERS := true
 
 PRODUCT_NAME := clown_fog
 PRODUCT_DEVICE := fog

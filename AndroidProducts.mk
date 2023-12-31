@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/apollo_fog.mk
+    $(LOCAL_DIR)/clown_fog.mk
 
 COMMON_LUNCH_CHOICES := \
-    apollo_fog-user \
-    apollo_fog-userdebug \
-    apollo_fog-eng
+    clown_fog-user \
+    clown_fog-userdebug \
+    clown_fog-eng

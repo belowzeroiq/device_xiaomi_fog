@@ -16,7 +16,7 @@ rm -rf hardware/xiaomi
 git clone https://github.com/LineageOS/android_hardware_xiaomi -b lineage-20 hardware/xiaomi
 
 # Kernel Sources
-git clone https://github.com/KDEFFALT/fog-kernel -b artifact-JADE kernel/xiaomi/fog
+git clone https://github.com/KDEFFALT/fog-kernel -b artifact-r2 kernel/xiaomi/fog
 
 # Vendor Sources
 git clone https://github.com/KDEFFALT/vendor_xiaomi_fog -b thirteen vendor/xiaomi/fog

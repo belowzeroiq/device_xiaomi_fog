@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/clown_fog.mk
+    $(LOCAL_DIR)/aicp_fog.mk
 
 COMMON_LUNCH_CHOICES := \
-    clown_fog-user \
-    clown_fog-userdebug \
-    clown_fog-eng
+    aicp_fog-user \
+    aicp_fog-userdebug \
+    aicp_fog-eng

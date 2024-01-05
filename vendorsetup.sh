@@ -20,7 +20,7 @@ git clone https://github.com/PixelExperience-Staging/hardware_qcom-caf_bengal_gp
 git clone https://github.com/PixelExperience-Staging/hardware_qcom-caf_bengal_media hardware/qcom-caf/bengal/media
 
 # Kernel Sources
-git clone https://github.com/KDEFFALT/fog-kernel -b artifact-r2 kernel/xiaomi/fog
+git clone https://github.com/KDEFFALT/fog-kernel -b ArtifactOSS kernel/xiaomi/fog
 
 # Vendor Sources
 git clone https://github.com/KDEFFALT/vendor_xiaomi_fog -b fourteen vendor/xiaomi/fog

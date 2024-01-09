@@ -347,6 +347,9 @@ PRODUCT_PACKAGES += \
     TelephonyOverlayFog \
     WifiOverlayFog
 
+PRODUCT_PACKAGES += \
+    $(LOCAL_PATH)/overlay-banana
+
 # Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 

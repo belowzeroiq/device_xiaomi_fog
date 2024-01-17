@@ -24,4 +24,6 @@ git clone https://github.com/KDEFFALT/hardware_qcom-caf_bengal -b thirteen hardw
 # Vendor Sources
 git clone https://github.com/KDEFFALT/vendor_xiaomi_fog -b thirteen vendor/xiaomi/fog
 
+# Viper4AndroidFX
+git clone https://github.com/swiitch-OFF-Lab/packages_apps_ViPER4AndroidFX -n V4A packages/apps/ViPER4AndroidFX
 echo -e "${color}Finished sync!${end}"

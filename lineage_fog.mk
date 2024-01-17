@@ -8,6 +8,26 @@ $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 # Inherit from fog device
 $(call inherit-product, device/xiaomi/fog/device.mk)
 
+
+# Matrixx 
+MATRIXX_MAINTAINER := Jackie
+MATRIXX_CHIPSET := SM6225
+MATRIXX_BATTERY := 5000mah
+MATRIXX_DISPLAY := 720X1650
+
+# Gapps
+WITH_GMS := true
+EXTRA_GAPPS := false
+
+# AOSP Recovery
+TARGET_USES_AOSP_RECOVERY := false
+
+# Nuke AudioFX
+TARGET_EXCLUDES_AUDIOFX := true
+
+#Blur effect
+TARGET_ENABLE_BLUR := false
+
 # Device Config
 USE_PIXEL_CHARGING := true
 TARGET_FACE_UNLOCK_SUPPORTED := true

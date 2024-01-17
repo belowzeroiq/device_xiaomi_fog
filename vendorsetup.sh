@@ -14,13 +14,10 @@ rm -rf hardware/xiaomi
 git clone https://github.com/LineageOS/android_hardware_xiaomi -b lineage-21 hardware/xiaomi
 
 # Bengal HALs
-git clone https://github.com/PixelExperience-Staging/hardware_qcom-caf_bengal_display hardware/qcom-caf/bengal/display 
-git clone https://github.com/PixelExperience-Staging/hardware_qcom-caf_bengal_audio hardware/qcom-caf/bengal/audio 
-git clone https://github.com/PixelExperience-Staging/hardware_qcom-caf_bengal_gps hardware/qcom-caf/bengal/gps
-git clone https://github.com/PixelExperience-Staging/hardware_qcom-caf_bengal_media hardware/qcom-caf/bengal/media
+git clone https://github.com/KDEFFALT/hardware_qcom-caf_bengal -b fourteen hardware/qcom-caf/bengal 
 
 # Kernel Sources
-git clone https://github.com/KDEFFALT/fog-kernel -b ArtifactOSS kernel/xiaomi/fog
+git clone https://github.com/KDEFFALT/fog-kernel -b artifact-new kernel/xiaomi/fog
 
 # Vendor Sources
 git clone https://github.com/KDEFFALT/vendor_xiaomi_fog -b fourteen vendor/xiaomi/fog

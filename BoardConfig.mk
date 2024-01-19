@@ -120,9 +120,6 @@ BOARD_BOOT_HEADER_VERSION := 3
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/configs/prebuilt/dtbo.img
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/configs/prebuilt/dtb.img
-
 BOARD_KERNEL_CMDLINE += \
     androidboot.fstab_suffix=qcom \
     androidboot.hardware=qcom \

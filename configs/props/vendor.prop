@@ -211,17 +211,11 @@ persist.vendor.dpmhalservice.enable=1
 
 # Graphics
 debug.egl.hw=0
+debug.hwui.renderer=skiagl
 debug.mdpcomp.logs=0
+debug.renderengine.backend=skiaglthreaded
 debug.sdm.support_writeback=0
 vendor.gralloc.secure_preview_buffer_format=420_sp
-
-# SkiaVK
-ro.hwui.use_vulkan=true
-debug.composition.type=skiavk
-debug.hwui.renderer=skiavk
-debug.renderengine.backend=skiavkthreaded
-renderthread.skia.reduceopstasksplitting=true
-debug.hwui.use_skiavk=true
 
 # Fling Velocity
 ro.min.fling_velocity=160

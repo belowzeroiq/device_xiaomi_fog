@@ -11,7 +11,13 @@ vendor.camera.aux.packagelist.ext=org.codeaurora.snapcam,com.android.camera,com.
 ro.charger.disable_init_blank=true
 ro.charger.enable_suspend=true
 
-# Blurs
+# Display
+debug.cpurend.vsync=false
+debug.hwui.skia_tracing_enabled=false
+debug.hwui.skia_use_perfetto_track_events=false
+debug.sf.enable_hwc_vds=0
+debug.sf.auto_latch_unsignaled=0
+debug.sf.enable_gl_backpressure=false
 ro.surface_flinger.supports_background_blur=0
 ro.sf.blurs_are_expensive=0
 persist.sys.sf.disable_blurs=0

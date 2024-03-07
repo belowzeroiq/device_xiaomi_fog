@@ -14,13 +14,13 @@ rm -rf hardware/xiaomi
 git clone https://github.com/LineageOS/android_hardware_xiaomi -b lineage-21 hardware/xiaomi
 
 # Bengal HALs
-git clone https://github.com/KDEFFALT/hardware_qcom-caf_bengal -b fourteen hardware/qcom-caf/bengal
+git clone https://github.com/belowzeroiq/hardware_qcom-caf_bengal -b fourteen hardware/qcom-caf/bengal
 
 # Kernel Sources
-git clone https://github.com/KDEFFALT/kernel_xiaomi_fog -b artifact-new kernel/xiaomi/fog
+git clone https://github.com/belowzeroiq/artifact-kernel -b yoru-stock kernel/xiaomi/fog
 
 # Vendor Sources
-git clone https://github.com/KDEFFALT/vendor_xiaomi_fog -b fourteen vendor/xiaomi/fog
+git clone https://github.com/belowzeroiq/vendor_xiaomi_fog -b fourteen vendor/xiaomi/fog
 
 # Viper4AndroidFX
 git clone https://github.com/swiitch-OFF-Lab/packages_apps_ViPER4AndroidFX -b V4A packages/apps/ViPER4AndroidFX
